@@ -1,26 +1,174 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Cozy RPG Color Palette */
+  --cream-50: #fefcf8;
+  --cream-100: #fdf7ed;
+  --cream-200: #faf0d9;
+  --cream-300: #f6e4b8;
+  --cream-400: #f0d18a;
+  --cream-500: #e8bc5e;
+  --cream-600: #d9a441;
+  --cream-700: #b68a35;
+  --cream-800: #926f2d;
+  --cream-900: #765a27;
+
+  --sage-50: #f6f8f4;
+  --sage-100: #eaf0e3;
+  --sage-200: #d8e2ca;
+  --sage-300: #bbcfa5;
+  --sage-400: #97b67d;
+  --sage-500: #78a05c;
+  --sage-600: #5d8045;
+  --sage-700: #496537;
+  --sage-800: #3c522f;
+  --sage-900: #334529;
+
+  --warmwood-50: #faf8f5;
+  --warmwood-100: #f3ede5;
+  --warmwood-200: #e6d8c8;
+  --warmwood-300: #d3bfa4;
+  --warmwood-400: #ba9d7e;
+  --warmwood-500: #a68562;
+  --warmwood-600: #997653;
+  --warmwood-700: #7f6046;
+  --warmwood-800: #6a503d;
+  --warmwood-900: #574233;
+
+  --sunset-50: #fef8f0;
+  --sunset-100: #fdecd6;
+  --sunset-200: #fad5ac;
+  --sunset-300: #f6b577;
+  --sunset-400: #f18c40;
+  --sunset-500: #ed6c1a;
+  --sunset-600: #de5010;
+  --sunset-700: #b73d10;
+  --sunset-800: #923214;
+  --sunset-900: #762d14;
+
+  /* App Theme Variables */
+  --background: var(--cream-50);
+  --foreground: var(--warmwood-800);
+  --card: var(--cream-100);
+  --card-foreground: var(--warmwood-700);
+  --primary: var(--sage-600);
+  --primary-foreground: var(--cream-50);
+  --secondary: var(--sunset-400);
+  --secondary-foreground: var(--cream-50);
+  --accent: var(--cream-300);
+  --accent-foreground: var(--warmwood-700);
+  --border: var(--cream-300);
+  --muted: var(--cream-200);
+  --muted-foreground: var(--warmwood-600);
 }
 
 @theme inline {
+  /* Custom Colors for Cozy RPG Theme */
+  --color-cream-50: var(--cream-50);
+  --color-cream-100: var(--cream-100);
+  --color-cream-200: var(--cream-200);
+  --color-cream-300: var(--cream-300);
+  --color-cream-400: var(--cream-400);
+  --color-cream-500: var(--cream-500);
+  --color-cream-600: var(--cream-600);
+  --color-cream-700: var(--cream-700);
+  --color-cream-800: var(--cream-800);
+  --color-cream-900: var(--cream-900);
+
+  --color-sage-50: var(--sage-50);
+  --color-sage-100: var(--sage-100);
+  --color-sage-200: var(--sage-200);
+  --color-sage-300: var(--sage-300);
+  --color-sage-400: var(--sage-400);
+  --color-sage-500: var(--sage-500);
+  --color-sage-600: var(--sage-600);
+  --color-sage-700: var(--sage-700);
+  --color-sage-800: var(--sage-800);
+  --color-sage-900: var(--sage-900);
+
+  --color-warmwood-50: var(--warmwood-50);
+  --color-warmwood-100: var(--warmwood-100);
+  --color-warmwood-200: var(--warmwood-200);
+  --color-warmwood-300: var(--warmwood-300);
+  --color-warmwood-400: var(--warmwood-400);
+  --color-warmwood-500: var(--warmwood-500);
+  --color-warmwood-600: var(--warmwood-600);
+  --color-warmwood-700: var(--warmwood-700);
+  --color-warmwood-800: var(--warmwood-800);
+  --color-warmwood-900: var(--warmwood-900);
+
+  --color-sunset-50: var(--sunset-50);
+  --color-sunset-100: var(--sunset-100);
+  --color-sunset-200: var(--sunset-200);
+  --color-sunset-300: var(--sunset-300);
+  --color-sunset-400: var(--sunset-400);
+  --color-sunset-500: var(--sunset-500);
+  --color-sunset-600: var(--sunset-600);
+  --color-sunset-700: var(--sunset-700);
+  --color-sunset-800: var(--sunset-800);
+  --color-sunset-900: var(--sunset-900);
+
+  /* Theme Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--warmwood-900);
+    --foreground: var(--cream-100);
+    --card: var(--warmwood-800);
+    --card-foreground: var(--cream-200);
+    --primary: var(--sage-400);
+    --primary-foreground: var(--warmwood-900);
+    --secondary: var(--sunset-300);
+    --secondary-foreground: var(--warmwood-900);
+    --accent: var(--warmwood-700);
+    --accent-foreground: var(--cream-200);
+    --border: var(--warmwood-600);
+    --muted: var(--warmwood-700);
+    --muted-foreground: var(--cream-400);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar for cozy feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sage-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sage-400);
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
