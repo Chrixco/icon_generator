@@ -213,7 +213,8 @@ export const projectUtils = {
       generatedAt: new Date(),
       cost: generationResult.cost,
       generationTime: generationResult.generationTime,
-      tags: extractTagsFromPrompt(prompt)
+      tags: extractTagsFromPrompt(prompt),
+      result: generationResult // Store the full result for gallery access
     }
 
     project.icons.push(icon)
