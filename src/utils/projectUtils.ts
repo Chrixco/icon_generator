@@ -577,6 +577,42 @@ export const storageUtils = {
     return { used, total }
   },
 
+  // Storage management functions
+  getStorageSize: (): number => {
+    let total = 0
+    for (let key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        total += localStorage[key].length + key.length
+      }
+    }
+    return total // Returns size in characters
+  },
+
+  getStorageSizeFormatted: (): string => {
+    const size = projectUtils.getStorageSize()
+    const kb = size / 1024
+    const mb = kb / 1024
+    if (mb >= 1) return `${mb.toFixed(2)} MB`
+    if (kb >= 1) return `${kb.toFixed(2)} KB`
+    return `${size} bytes`
+  },
+
+  clearIconsFromProject: (projectId: string): void => {
+    const project = projectUtils.getProject(projectId)
+    if (!project) return
+
+    project.icons = []
+    projectUtils.updateProject(project)
+  },
+
+  clearAllIcons: (): void => {
+    const projects = projectUtils.getAllProjects()
+    projects.forEach(project => {
+      project.icons = []
+      projectUtils.updateProject(project)
+    })
+  },
+
   clearAllData: (): void => {
     Object.values(STORAGE_KEYS).forEach(key => {
       localStorage.removeItem(key)
