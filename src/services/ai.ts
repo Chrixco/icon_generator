@@ -224,7 +224,6 @@ class AIService {
 DESCRIPTION: ${description}
 
 TECHNICAL REQUIREMENTS:
-- 1024×1024 pixels, perfectly square
 - High contrast and bold colors that work at small sizes
 - Clear, memorable design with strong visual hierarchy
 - Solid background (no transparency)

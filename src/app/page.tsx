@@ -73,13 +73,13 @@ export default function Home() {
     setResult(null)
   }
 
-  // Get image size based on aspect ratio
+  // Get image size based on aspect ratio (DALL-E 3 compatible sizes)
   const getImageSize = (ratio: 'square' | 'vertical' | 'horizontal') => {
     switch (ratio) {
-      case 'vertical': return '768x1344' // 9:16 ratio
-      case 'horizontal': return '1344x768' // 16:9 ratio
+      case 'vertical': return '1024x1792' // DALL-E 3 vertical format
+      case 'horizontal': return '1792x1024' // DALL-E 3 horizontal format
       case 'square':
-      default: return '1024x1024' // 1:1 ratio
+      default: return '1024x1024' // DALL-E 3 square format
     }
   }
 
@@ -116,9 +116,9 @@ export default function Home() {
 
     // 4. Add aspect ratio directives
     if (aspectRatio === 'vertical') {
-      enhancedPrompt = `${enhancedPrompt}, vertical composition, portrait orientation, taller than wide, 9:16 aspect ratio`
+      enhancedPrompt = `${enhancedPrompt}, vertical composition, portrait orientation, taller than wide, vertical format`
     } else if (aspectRatio === 'horizontal') {
-      enhancedPrompt = `${enhancedPrompt}, horizontal composition, landscape orientation, wider than tall, 16:9 aspect ratio`
+      enhancedPrompt = `${enhancedPrompt}, horizontal composition, landscape orientation, wider than tall, horizontal format`
     } else {
       enhancedPrompt = `${enhancedPrompt}, square composition, 1:1 aspect ratio, centered design`
     }
