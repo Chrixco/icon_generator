@@ -135,17 +135,21 @@ export default function Home() {
       const iconName = generatedPrompt.split(' ').slice(0, 3).join(' ').trim() || 'Generated Icon'
       const finalIconName = iconName.length > 0 ? iconName : 'Generated Icon'
 
-      projectUtils.addIconToProject(
+      const saveSuccess = projectUtils.addIconToProject(
         currentProject.id,
         generationResult,
         generatedPrompt,
         finalIconName
       )
 
-      // Update the current project to reflect the new icon
-      const updatedProject = projectUtils.getProject(currentProject.id)
-      if (updatedProject) {
-        setCurrentProject(updatedProject)
+      if (saveSuccess) {
+        // Update the current project to reflect the new icon
+        const updatedProject = projectUtils.getProject(currentProject.id)
+        if (updatedProject) {
+          setCurrentProject(updatedProject)
+        }
+      } else {
+        console.warn('Failed to save icon - likely due to storage quota exceeded')
       }
     }
   }

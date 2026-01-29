@@ -121,11 +121,18 @@ export const projectUtils = {
       }
     }
 
-    const projects = projectUtils.getAllProjects()
-    projects.push(project)
-    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects))
-
-    return project
+    try {
+      const projects = projectUtils.getAllProjects()
+      projects.push(project)
+      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects))
+      return project
+    } catch (error) {
+      console.error('Failed to create project - localStorage quota exceeded:', error)
+      if (error instanceof DOMException && error.code === 22) {
+        alert('Storage quota exceeded! Cannot create new project. Please clear some icons to free up space.')
+      }
+      throw error
+    }
   },
 
   // Get all projects
@@ -152,13 +159,24 @@ export const projectUtils = {
   },
 
   // Update project
-  updateProject: (project: IconProject): void => {
-    const projects = projectUtils.getAllProjects()
-    const index = projects.findIndex(p => p.id === project.id)
+  updateProject: (project: IconProject): boolean => {
+    try {
+      const projects = projectUtils.getAllProjects()
+      const index = projects.findIndex(p => p.id === project.id)
 
-    if (index >= 0) {
-      projects[index] = { ...project, updatedAt: new Date() }
-      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects))
+      if (index >= 0) {
+        projects[index] = { ...project, updatedAt: new Date() }
+        localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects))
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Failed to update project - localStorage quota exceeded:', error)
+      // Optionally show user-friendly message about storage being full
+      if (error instanceof DOMException && error.code === 22) {
+        alert('Storage quota exceeded! Please clear some icons to save new ones. Use the gallery to delete old icons.')
+      }
+      return false
     }
   },
 
@@ -199,9 +217,9 @@ export const projectUtils = {
   },
 
   // Add icon to project
-  addIconToProject: (projectId: string, generationResult: ImageGenerationResponse, prompt: string, name?: string): void => {
+  addIconToProject: (projectId: string, generationResult: ImageGenerationResponse, prompt: string, name?: string): boolean => {
     const project = projectUtils.getProject(projectId)
-    if (!project || !generationResult.success || !generationResult.imageUrl) return
+    if (!project || !generationResult.success || !generationResult.imageUrl) return false
 
     const icon: SavedIcon = {
       id: generateId(),
@@ -218,7 +236,7 @@ export const projectUtils = {
     }
 
     project.icons.push(icon)
-    projectUtils.updateProject(project)
+    return projectUtils.updateProject(project)
   },
 
   // Remove icon from project
