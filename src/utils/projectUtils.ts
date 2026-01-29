@@ -1,6 +1,7 @@
 // Project Management Utilities for Game Icon Generator
 
 import { ImageGenerationResponse } from '@/types/ai'
+import { fileUtils } from './fileUtils'
 
 export interface IconProject {
   id: string
@@ -21,6 +22,8 @@ export interface SavedIcon {
   enhancedPrompt?: string // The actual prompt sent to API with palette colors
   result?: any // Store the full generation result
   imageUrl: string
+  filePath?: string // Local file path for downloaded image
+  fileName?: string // Local filename
   provider: string
   model: string
   generatedAt: Date
@@ -217,26 +220,60 @@ export const projectUtils = {
   },
 
   // Add icon to project
-  addIconToProject: (projectId: string, generationResult: ImageGenerationResponse, prompt: string, name?: string): boolean => {
+  addIconToProject: async (projectId: string, generationResult: ImageGenerationResponse, prompt: string, name?: string): Promise<boolean> => {
     const project = projectUtils.getProject(projectId)
     if (!project || !generationResult.success || !generationResult.imageUrl) return false
 
-    const icon: SavedIcon = {
-      id: generateId(),
-      name: name || `Icon ${project.icons.length + 1}`,
-      prompt,
-      imageUrl: generationResult.imageUrl,
-      provider: generationResult.provider,
-      model: generationResult.model,
-      generatedAt: new Date(),
-      cost: generationResult.cost,
-      generationTime: generationResult.generationTime,
-      tags: extractTagsFromPrompt(prompt),
-      result: generationResult // Store the full result for gallery access
-    }
+    const iconName = name || `Icon ${project.icons.length + 1}`
 
-    project.icons.push(icon)
-    return projectUtils.updateProject(project)
+    try {
+      // Save the icon file to local downloads
+      const localIcon = await fileUtils.saveIconToFile(
+        generationResult,
+        iconName,
+        prompt,
+        project.name
+      )
+
+      const icon: SavedIcon = {
+        id: generateId(),
+        name: iconName,
+        prompt,
+        imageUrl: generationResult.imageUrl,
+        provider: generationResult.provider,
+        model: generationResult.model,
+        generatedAt: new Date(),
+        cost: generationResult.cost,
+        generationTime: generationResult.generationTime,
+        tags: extractTagsFromPrompt(prompt),
+        result: generationResult, // Store the full result for gallery access
+        filePath: localIcon?.filePath, // Store local file path
+        fileName: localIcon?.fileName  // Store local filename
+      }
+
+      project.icons.push(icon)
+      return projectUtils.updateProject(project)
+    } catch (error) {
+      console.error('Failed to save icon to file:', error)
+
+      // Fallback: save without file download
+      const icon: SavedIcon = {
+        id: generateId(),
+        name: iconName,
+        prompt,
+        imageUrl: generationResult.imageUrl,
+        provider: generationResult.provider,
+        model: generationResult.model,
+        generatedAt: new Date(),
+        cost: generationResult.cost,
+        generationTime: generationResult.generationTime,
+        tags: extractTagsFromPrompt(prompt),
+        result: generationResult
+      }
+
+      project.icons.push(icon)
+      return projectUtils.updateProject(project)
+    }
   },
 
   // Remove icon from project

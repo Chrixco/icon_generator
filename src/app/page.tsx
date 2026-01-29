@@ -126,7 +126,7 @@ export default function Home() {
     return enhancedPrompt
   }
 
-  const handleGenerationComplete = (generationResult: ImageGenerationResponse) => {
+  const handleGenerationComplete = async (generationResult: ImageGenerationResponse) => {
     setResult(generationResult)
     setIsGenerating(false)
 
@@ -135,21 +135,26 @@ export default function Home() {
       const iconName = generatedPrompt.split(' ').slice(0, 3).join(' ').trim() || 'Generated Icon'
       const finalIconName = iconName.length > 0 ? iconName : 'Generated Icon'
 
-      const saveSuccess = projectUtils.addIconToProject(
-        currentProject.id,
-        generationResult,
-        generatedPrompt,
-        finalIconName
-      )
+      try {
+        const saveSuccess = await projectUtils.addIconToProject(
+          currentProject.id,
+          generationResult,
+          generatedPrompt,
+          finalIconName
+        )
 
-      if (saveSuccess) {
-        // Update the current project to reflect the new icon
-        const updatedProject = projectUtils.getProject(currentProject.id)
-        if (updatedProject) {
-          setCurrentProject(updatedProject)
+        if (saveSuccess) {
+          // Update the current project to reflect the new icon
+          const updatedProject = projectUtils.getProject(currentProject.id)
+          if (updatedProject) {
+            setCurrentProject(updatedProject)
+          }
+          console.log(`✅ Icon "${finalIconName}" saved to project and downloaded to ${currentProject.name}_Images/`)
+        } else {
+          console.warn('Failed to save icon - likely due to storage quota exceeded')
         }
-      } else {
-        console.warn('Failed to save icon - likely due to storage quota exceeded')
+      } catch (error) {
+        console.error('Failed to save icon:', error)
       }
     }
   }
