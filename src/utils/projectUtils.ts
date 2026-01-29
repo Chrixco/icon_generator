@@ -235,18 +235,20 @@ export const projectUtils = {
         project.name
       )
 
+      // Create lightweight icon record (NO image data stored in localStorage)
       const icon: SavedIcon = {
         id: generateId(),
         name: iconName,
         prompt,
-        imageUrl: generationResult.imageUrl,
+        imageUrl: generationResult.imageUrl, // Keep URL for display, but no base64 data
         provider: generationResult.provider,
         model: generationResult.model,
         generatedAt: new Date(),
         cost: generationResult.cost,
         generationTime: generationResult.generationTime,
         tags: extractTagsFromPrompt(prompt),
-        result: generationResult, // Store the full result for gallery access
+        // DO NOT store full result to save localStorage space
+        // result: generationResult,
         filePath: localIcon?.filePath, // Store local file path
         fileName: localIcon?.fileName  // Store local filename
       }
@@ -256,19 +258,19 @@ export const projectUtils = {
     } catch (error) {
       console.error('Failed to save icon to file:', error)
 
-      // Fallback: save without file download
+      // Fallback: save minimal metadata only (no large image data)
       const icon: SavedIcon = {
         id: generateId(),
         name: iconName,
         prompt,
-        imageUrl: generationResult.imageUrl,
+        imageUrl: generationResult.imageUrl, // Keep URL for display
         provider: generationResult.provider,
         model: generationResult.model,
         generatedAt: new Date(),
         cost: generationResult.cost,
         generationTime: generationResult.generationTime,
-        tags: extractTagsFromPrompt(prompt),
-        result: generationResult
+        tags: extractTagsFromPrompt(prompt)
+        // NO result stored to avoid localStorage bloat
       }
 
       project.icons.push(icon)
@@ -644,7 +646,7 @@ export const storageUtils = {
   },
 
   getStorageSizeFormatted: (): string => {
-    const size = projectUtils.getStorageSize()
+    const size = storageUtils.getStorageSize()
     const kb = size / 1024
     const mb = kb / 1024
     if (mb >= 1) return `${mb.toFixed(2)} MB`
@@ -672,5 +674,68 @@ export const storageUtils = {
     Object.values(STORAGE_KEYS).forEach(key => {
       localStorage.removeItem(key)
     })
+  },
+
+  // Clean up old image data from localStorage for existing projects
+  cleanupImageData: (): void => {
+    try {
+      const projects = projectUtils.getAllProjects()
+      let cleanedCount = 0
+
+      projects.forEach(project => {
+        project.icons.forEach(icon => {
+          // Remove large result data if it exists
+          if (icon.result) {
+            delete icon.result
+            cleanedCount++
+          }
+
+          // Keep only essential data
+          if (icon.imageUrl && icon.imageUrl.startsWith('data:')) {
+            // If imageUrl is base64, we'll keep it for display but warn it takes space
+            console.warn(`Icon "${icon.name}" has base64 data - consider re-generating for smaller storage`)
+          }
+        })
+
+        // Update the project with cleaned data
+        projectUtils.updateProject(project)
+      })
+
+      if (cleanedCount > 0) {
+        console.log(`✅ Cleaned up ${cleanedCount} icons to reduce storage usage`)
+        alert(`Storage cleanup complete! Removed heavy data from ${cleanedCount} icons.`)
+      }
+    } catch (error) {
+      console.error('Failed to cleanup storage:', error)
+    }
+  },
+
+  // Get storage usage breakdown
+  getDetailedStorageInfo: (): { projects: number; icons: number; totalSize: number; formatted: string } => {
+    const projects = projectUtils.getAllProjects()
+    let iconCount = 0
+    let totalSize = 0
+
+    // Calculate size of all stored data
+    for (let key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        totalSize += localStorage[key].length + key.length
+      }
+    }
+
+    // Count icons across all projects
+    projects.forEach(project => {
+      iconCount += project.icons.length
+    })
+
+    const mb = totalSize / (1024 * 1024)
+    const formatted = mb >= 1 ? `${mb.toFixed(2)} MB` : `${(totalSize / 1024).toFixed(2)} KB`
+
+    return {
+      projects: projects.length,
+      icons: iconCount,
+      totalSize,
+      formatted
+    }
   }
 }

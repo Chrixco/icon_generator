@@ -142,9 +142,9 @@ export default function BatchGenerationQueue({
 
       // Step 4: Add aspect ratio directives
       if (item.aspectRatio === 'vertical') {
-        finalPrompt = `${finalPrompt}, vertical composition, portrait orientation, taller than wide, 9:16 aspect ratio`
+        finalPrompt = `${finalPrompt}, vertical composition, portrait orientation, taller than wide, vertical format`
       } else if (item.aspectRatio === 'horizontal') {
-        finalPrompt = `${finalPrompt}, horizontal composition, landscape orientation, wider than tall, 16:9 aspect ratio`
+        finalPrompt = `${finalPrompt}, horizontal composition, landscape orientation, wider than tall, horizontal format`
       } else {
         finalPrompt = `${finalPrompt}, square composition, 1:1 aspect ratio, centered design`
       }

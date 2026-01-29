@@ -125,12 +125,25 @@ class AIService {
 
     try {
       const model = request.model || 'dall-e-3'
-      const quality = request.quality || 'standard'
+      const requestedQuality = request.quality || 'standard'
       const style = request.style || 'vivid'
       const size = request.size || '1024x1024'
 
+      // CRITICAL: DALL-E 3 limitation - non-square sizes only work with 'standard' quality
+      // If using non-square size with DALL-E 3, force quality to 'standard'
+      const quality = (size !== '1024x1024' && model === 'dall-e-3') ? 'standard' : requestedQuality
+
       // Enhanced prompt for game icons
       const enhancedPrompt = this.buildGameIconPrompt(request.prompt)
+
+      // Debug logging for aspect ratio issues
+      console.log(`🎨 DALL-E API Request:`, {
+        model,
+        size,
+        quality: quality,
+        originalQuality: requestedQuality,
+        isNonSquare: size !== '1024x1024'
+      })
 
       const response = await this.openAI.images.generate({
         model: model as 'dall-e-2' | 'dall-e-3',

@@ -256,23 +256,34 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-cream-100 to-sage-50">
-      {/* Decorative background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-32 h-32 bg-sage-200 rounded-full blur-3xl"></div>
-        <div className="absolute top-20 right-20 w-40 h-40 bg-sunset-200 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-36 h-36 bg-warmwood-200 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-cream-100 to-sage-50 relative overflow-hidden">
+      {/* Enhanced Animated Background Pattern */}
+      <div className="absolute inset-0 opacity-15">
+        <div className="absolute top-0 left-0 w-32 h-32 bg-sage-200 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute top-20 right-20 w-40 h-40 bg-sunset-200 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-20 left-20 w-36 h-36 bg-warmwood-200 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-sage-300 rounded-full blur-2xl animate-pulse" style={{animationDelay: '3s'}}></div>
+        <div className="absolute bottom-1/3 right-1/3 w-28 h-28 bg-sunset-300 rounded-full blur-2xl animate-float" style={{animationDelay: '4s'}}></div>
       </div>
 
+      {/* Subtle Grid Pattern Overlay */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, var(--sage-300) 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }}></div>
+
       <div className="relative container mx-auto px-4 py-8">
-        {/* Header with Project Selector */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Enhanced Header with Project Selector */}
+        <div className="flex items-center justify-between mb-8 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-sage-400 to-sage-600 rounded-xl shadow-lg">
-              <span className="text-2xl">🎮</span>
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-sage-400 via-sunset-400 to-warmwood-400 rounded-xl blur opacity-60 group-hover:opacity-80 transition duration-300 animate-pulse"></div>
+              <div className="relative flex items-center justify-center w-16 h-16 bg-gradient-to-br from-sage-400 to-sage-600 rounded-xl shadow-lg group-hover:shadow-xl transform group-hover:scale-105 transition-all duration-300">
+                <span className="text-2xl group-hover:animate-bounce">🎮</span>
+              </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-warmwood-700 via-sage-700 to-sunset-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-warmwood-700 via-sage-700 to-sunset-600 bg-clip-text text-transparent hover:from-sage-700 hover:via-sunset-600 hover:to-warmwood-700 transition-all duration-500">
                 Cozy Icon Forge
               </h1>
               <p className="text-warmwood-600">Your magical AI icon workshop</p>
@@ -284,11 +295,12 @@ export default function Home() {
             <div className="flex space-x-2">
               <button
                 onClick={handleOpenIconGallery}
-                className="flex items-center px-3 py-2 bg-gradient-to-r from-sage-500 to-sage-600 text-cream-50 rounded-lg hover:from-sage-600 hover:to-sage-700 transition-all shadow-lg text-sm"
+                className="group flex items-center px-3 py-2 bg-gradient-to-r from-sage-500 to-sage-600 text-cream-50 rounded-lg hover:from-sage-600 hover:to-sage-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 text-sm relative overflow-hidden"
                 title="View Icon Gallery"
               >
-                <span className="mr-2">🖼️</span>
+                <span className="mr-2 group-hover:animate-pulse">🖼️</span>
                 Gallery
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 {currentProject && currentProject.icons.length > 0 && (
                   <span className="ml-2 px-2 py-0.5 bg-cream-50 text-sage-700 rounded-full text-xs font-bold">
                     {currentProject.icons.length}
@@ -297,19 +309,21 @@ export default function Home() {
               </button>
               <button
                 onClick={handleOpenColorPalette}
-                className="flex items-center px-3 py-2 bg-gradient-to-r from-sunset-500 to-sunset-600 text-cream-50 rounded-lg hover:from-sunset-600 hover:to-sunset-700 transition-all shadow-lg text-sm"
+                className="group flex items-center px-3 py-2 bg-gradient-to-r from-sunset-500 to-sunset-600 text-cream-50 rounded-lg hover:from-sunset-600 hover:to-sunset-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 text-sm relative overflow-hidden"
                 title="Edit Color Palette"
               >
-                <span className="mr-2">🎨</span>
+                <span className="mr-2 group-hover:animate-pulse">🎨</span>
                 Palette
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               </button>
               <button
                 onClick={handleOpenBatchQueue}
-                className="flex items-center px-3 py-2 bg-gradient-to-r from-warmwood-500 to-warmwood-600 text-cream-50 rounded-lg hover:from-warmwood-600 hover:to-warmwood-700 transition-all shadow-lg text-sm"
+                className="group flex items-center px-3 py-2 bg-gradient-to-r from-warmwood-500 to-warmwood-600 text-cream-50 rounded-lg hover:from-warmwood-600 hover:to-warmwood-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 text-sm relative overflow-hidden"
                 title="Batch Generation Queue"
               >
-                <span className="mr-2">⚡</span>
+                <span className="mr-2 group-hover:animate-pulse">⚡</span>
                 Queue
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 {currentProject && currentProject.generationQueue && currentProject.generationQueue.filter(item => item.status === 'pending').length > 0 && (
                   <span className="ml-2 px-2 py-0.5 bg-cream-50 text-warmwood-700 rounded-full text-xs font-bold">
                     {currentProject.generationQueue.filter(item => item.status === 'pending').length}
@@ -329,33 +343,36 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Cozy Description */}
-        <div className="text-center mb-16">
+        {/* Enhanced Cozy Description */}
+        <div className="text-center mb-16 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
           <p className="text-xl text-warmwood-600 max-w-3xl mx-auto mb-8 leading-relaxed">
             Craft beautiful game icons with the magic of AI. Whether you're building a cozy village sim or an epic adventure,
             create icons that capture the heart of your game.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
-            <span className="inline-flex items-center px-4 py-2 bg-sage-100 text-sage-800 rounded-full text-sm font-medium border border-sage-200 shadow-sm">
-              <span className="w-2 h-2 bg-sage-500 rounded-full mr-2 animate-pulse"></span>
+          <div className="flex flex-wrap justify-center gap-3 mt-8 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+            <span className="group inline-flex items-center px-4 py-2 bg-sage-100 text-sage-800 rounded-full text-sm font-medium border border-sage-200 shadow-sm hover:shadow-md hover:bg-sage-200 hover:-translate-y-1 transition-all duration-300 cursor-default">
+              <span className="w-2 h-2 bg-sage-500 rounded-full mr-2 animate-pulse group-hover:animate-bounce"></span>
               ✨ Cozy RPG Vibes
             </span>
-            <span className="inline-flex items-center px-4 py-2 bg-sunset-100 text-sunset-800 rounded-full text-sm font-medium border border-sunset-200 shadow-sm">
-              <span className="w-2 h-2 bg-sunset-500 rounded-full mr-2 animate-pulse"></span>
+            <span className="group inline-flex items-center px-4 py-2 bg-sunset-100 text-sunset-800 rounded-full text-sm font-medium border border-sunset-200 shadow-sm hover:shadow-md hover:bg-sunset-200 hover:-translate-y-1 transition-all duration-300 cursor-default" style={{animationDelay: '0.1s'}}>
+              <span className="w-2 h-2 bg-sunset-500 rounded-full mr-2 animate-pulse group-hover:animate-bounce"></span>
               🎨 AI-Powered Magic
             </span>
-            <span className="inline-flex items-center px-4 py-2 bg-warmwood-100 text-warmwood-800 rounded-full text-sm font-medium border border-warmwood-200 shadow-sm">
-              <span className="w-2 h-2 bg-warmwood-500 rounded-full mr-2 animate-pulse"></span>
+            <span className="group inline-flex items-center px-4 py-2 bg-warmwood-100 text-warmwood-800 rounded-full text-sm font-medium border border-warmwood-200 shadow-sm hover:shadow-md hover:bg-warmwood-200 hover:-translate-y-1 transition-all duration-300 cursor-default" style={{animationDelay: '0.2s'}}>
+              <span className="w-2 h-2 bg-warmwood-500 rounded-full mr-2 animate-pulse group-hover:animate-bounce"></span>
               🏠 Game-Ready Icons
             </span>
           </div>
         </div>
 
-        {/* Project Workspace Overview */}
+        {/* Enhanced Project Workspace Overview */}
         {currentProject && (
-          <div className="bg-gradient-to-br from-sage-50 to-cream-100 border-2 border-sage-200 rounded-2xl p-6 shadow-xl mb-8">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-gradient-to-br from-sage-50 to-cream-100 border-2 border-sage-200 rounded-2xl p-6 shadow-xl mb-8 hover:shadow-2xl transition-all duration-500 animate-fade-in-up relative overflow-hidden group" style={{animationDelay: '0.4s'}}>
+            {/* Subtle hover glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-sage-100/30 via-cream-100/30 to-sunset-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-warmwood-400 to-warmwood-600 rounded-xl mr-4 shadow-lg">
                   <span className="text-xl">🎨</span>
@@ -462,6 +479,7 @@ export default function Home() {
                 </div>
               </div>
             )}
+            </div>
           </div>
         )}
 
@@ -644,9 +662,7 @@ export default function Home() {
       {/* Icon Gallery Modal */}
       {showIconGallery && (
         <ProjectIconGallery
-          project={currentProject}
           onClose={handleCloseIconGallery}
-          onProjectUpdate={setCurrentProject}
         />
       )}
     </div>

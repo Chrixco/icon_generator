@@ -113,10 +113,14 @@ export default function IconGenerationForm({
   }
 
   return (
-    <div className="bg-gradient-to-br from-cream-50 to-warmwood-50 rounded-2xl shadow-xl border-2 border-warmwood-200 p-8 relative">
-      {/* Decorative magical elements */}
-      <div className="absolute top-4 right-4 text-lg opacity-60 animate-pulse">✨</div>
-      <div className="absolute bottom-4 left-4 text-sm opacity-40 animate-bounce">🎨</div>
+    <div className="bg-gradient-to-br from-cream-50 to-warmwood-50 rounded-2xl shadow-xl border-2 border-warmwood-200 p-8 relative hover:shadow-2xl transition-all duration-500 animate-fade-in-up overflow-hidden group">
+      {/* Subtle background animation */}
+      <div className="absolute inset-0 bg-gradient-to-r from-sage-100/20 via-cream-100/20 to-sunset-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+      <div className="relative z-10">
+      {/* Enhanced Decorative magical elements */}
+      <div className="absolute top-4 right-4 text-lg opacity-60 animate-pulse hover:opacity-100 hover:animate-bounce hover:scale-110 transition-all cursor-default">✨</div>
+      <div className="absolute bottom-4 left-4 text-sm opacity-40 animate-bounce hover:opacity-80 hover:animate-pulse transition-opacity cursor-default">🎨</div>
+      <div className="absolute top-1/2 right-8 text-xs opacity-20 animate-cozy-float">🪄</div>
 
       <div className="flex items-center mb-8">
         <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-sage-400 to-sage-600 rounded-xl mr-4 shadow-lg">
@@ -277,6 +281,13 @@ export default function IconGenerationForm({
               </button>
             ))}
           </div>
+          {aspectRatio !== 'square' && (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs text-blue-700">
+                ℹ️ Non-square formats automatically use 'Standard' quality for DALL-E 3 compatibility
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Background Creation Toggle */}
@@ -391,10 +402,10 @@ export default function IconGenerationForm({
         <button
           type="submit"
           disabled={isGenerating || !prompt.trim()}
-          className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform ${
+          className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-500 transform ${
             isGenerating || !prompt.trim()
               ? 'bg-warmwood-300 text-warmwood-600 cursor-not-allowed'
-              : 'bg-gradient-to-r from-sage-500 to-sage-600 text-cream-50 hover:from-sage-600 hover:to-sage-700 hover:scale-105 shadow-lg hover:shadow-sage-200'
+              : 'bg-gradient-to-r from-sage-500 to-sage-600 text-cream-50 hover:from-sage-600 hover:to-sage-700 hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-2xl hover:shadow-sage-200 animate-glow-pulse'
           } relative overflow-hidden`}
         >
           {isGenerating ? (
@@ -428,6 +439,7 @@ export default function IconGenerationForm({
           </div>
         )}
       </form>
+    </div>
     </div>
   )
 }
